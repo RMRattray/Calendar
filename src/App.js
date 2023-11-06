@@ -3,7 +3,7 @@ import './App.css';
 
 function StartDateBox( props ) {
 
-  const [props_state, set_props_state] = useState( props );
+  const [props_state, set_props_state] = useState( { ...props, ...{ "style": { "display": "none" } } } );
   const content_div = <div style={props_state["style"]}>{props_state["content"]}</div>;
   const handleChecking = (event) => {
     if (event.target.checked) {
@@ -18,22 +18,27 @@ function StartDateBox( props ) {
   return (
     <div>
       {cbox}
-      <label for="my_check">Change start date</label><br />
+      <label for="my_check">{props_state["label"]}</label><br />
       {content_div}
     </div>
   )
 }
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <StartDateBox param_name="Start date" content='<label for="year_text">Year:</label>
+  const content_changing = <div>
+    <label for="year_text">Year:</label>
     <input type="text" id="year_text" name="year_text"></input>
     <label for="month_text">Month:</label>
     <input type="text" id="month_text" name="month_text"></input>
     <label for="day_text">Day:</label>
-    <input type="text" id="day_text" name="day_text"></input>'
+    <input type="text" id="day_text" name="day_text"></input>
+  </div>;
+
+  return (
+    <div className="App">
+      <header className="App-header">
+        <StartDateBox param_name="Start date" label ="Change start date"
+        content = {content_changing}
      />
         <p>
           Editing <code>src/App.js</code> and saving <em>will</em> cause it to reload!
