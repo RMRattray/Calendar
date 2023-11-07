@@ -39,18 +39,16 @@ function CheckHideBox( props ) {
 // count - an initial count of the number
 // name - a name for the counter, its ID, and the IDs of wrapper divs cloning the content one
 // label - a label to go beside the counter
+// one_content - any extra content to appear just once
 // content - the div to be repeated so many times
 // it outputs a div containining divs called {name}_1, etc. contain copies of content_div
 function CountBox( props ) {
   
-  const [count, set_count] = useState(props["count"]);
+  // const [count, set_count] = useState(props["count"]);
   const [go_children, set_children] = useState([]);
-
-  console.log(`Initial count: ${count}`);
 
   const handleChange = (event) => {
     let cur_count = go_children.length;
-    console.log(`count: ${count}\tcur_count: ${cur_count}\tevent_value: ${event.target.value}`);
     if (cur_count > event.target.value) {
       set_children(go_children.slice(0, event.target.value));
     }
@@ -62,17 +60,38 @@ function CountBox( props ) {
       }
       set_children([...go_children, ...extras]);
     }
-    set_count(event.target.value);
+    // set_count(event.target.value);
   }
 
-  const go_div = <div>
+  return(<div>
+    <label for={props["name"]}>{props["label"]}</label>
     <input type="number" step="1" min="0" name={props["name"]} // value={count}
       id={props["name"]} onChange={handleChange}></input>
-    <label for={props["name"]}>{props["label"]}</label>
+    {props["one_content"]}
     {go_children}
-  </div>
-  
-  return go_div;
+  </div>);
+}
+
+// Recursept produces a div with a button for copying itself at the end of itself
+// It takes the following parameters:
+// end and recur - the words to put on the button
+// content - the rest of the content of the div
+function Recursept( props ) {
+  const [next, set_next] = useState({"recurring":false, "next":<></>});
+
+  const switch_recur = () => {
+    if (next["recurring"]) {
+      set_next({"recurring":false, "next":<></>});
+    } else {
+      set_next({"recurring":true, "next": <Recursept end={props["end"]} content={props["content"]} recur={props["recur"]}/>})
+    }
+  }
+
+  return ( <div>
+    {props["content"]}
+    <button onClick={switch_recur}>{next["recurring"] ? props["recur"] : props["end"]}</button>
+    {next["next"]}
+  </div>);
 }
 
 // App is where the app is written
@@ -86,18 +105,32 @@ function App() {
     <input type="text" id="day_text" name="day_text"></input>
   </div>;
 
+  const leap_add = <div>every <input type="number" /> years</div>
+  const leap_input = <div><h2>Frequency:</h2>
+    <Recursept end="." recur="except" content = {leap_add}/>
+  </div>
+
   const year_len_input = <div>
     <label for="year_days">Days in non-leap year:</label>
     <input type="number" name="year_days" id="year_days" min="1"></input>
+    <CheckHideBox name="leap years" label="Leap years" content = {leap_input}/>
   </div>
+  
+  const month_table_heads = <div><span>Name</span><span>Days</span><span>Leap days</span></div>
+
+  const month_inputs = <div><input type="text"/><input type="number"/><input type="number"/></div>
 
   const week_day = <input type="text"></input>
+
 
   return (
     <div className="App">
       <CheckHideBox name="start_date" label="Change start date" content = {date_input}/>
       <CheckHideBox name="year_len" label="Change year length" content = {year_len_input}/>
-      <CountBox name="week_days" label = "Days in week:  " count="5" content = {week_day}/>
+      <CheckHideBox name="months" label="Change months"
+        content = {<CountBox name="months" label="Month count:  " count="12" content = {month_inputs} one_content={month_table_heads}/> } />
+      <CheckHideBox name="weeks" label="Rename week days"
+        content = {<CountBox name="week_days" label = "Days in week:  " count="5" content = {week_day}/> } />
       <p>
         Editing <code>src/App.js</code> and saving <em>will</em> cause it to reload!
       </p>
