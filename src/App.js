@@ -25,7 +25,7 @@ function CheckHideBox( props ) {
   onClick={handleChecking}></input> );
 
   return (
-    <div>
+    <div className='checkHideBox'>
       {cbox}
       <label for={props_state["name"]}>{props_state["label"]}</label><br />
       {content_div}
@@ -97,16 +97,12 @@ function Recursept( props ) {
 // App is where the app is written
 function App() {
   const start_date_input = <div>
-    <label for="year_text">Year:  </label>
-    <input type="text" id="year_text" name="year_text"></input>
-    <label for="month_text">Month:  </label>
-    <input type="text" id="month_text" name="month_text"></input>
-    <label for="day_text">Day:  </label>
-    <input type="text" id="day_text" name="day_text"></input>
+    <input type="date" id="start_date" />
+    <select name="direction"><option value="1">AD / CE</option><option value="-1">BC / BCE</option></select>
   </div>;
 
   const leap_add = <span>every <input type="number" /> years</span>
-  const leap_input = <div><h2>Frequency:</h2>
+  const leap_input = <div>Frequency:<br/>
     <Recursept end="." recur="except" content = {leap_add}/>
   </div>
 
@@ -116,13 +112,13 @@ function App() {
     <CheckHideBox name="leap years" label="Leap years" content = {leap_input}/>
   </div>
   
-  const month_table_heads = <div><span>Name</span><span>Days</span><span>Leap days</span></div>
+  const month_table_heads = <div><span className='name_text'>Name</span><span className='number_head'>Days</span><span className='number_head'>Leapdays</span></div>
 
-  const month_inputs = <div><input type="text"/><input type="number"/><input type="number"/></div>
+  const month_inputs = <div><input type="text" className='name_text'/><input type="number"/><input type="number"/></div>
 
-  const week_day = <input type="text"></input>
+  const week_day = <input type="text" className='name_text'></input>
 
-  const date_input = <span><input type="date" /><input type="text"/></span>
+  const date_input = <span><input type="date"/><input type="text" className='sig_text'/></span>
 
   return (
     <div className="App">
@@ -132,13 +128,13 @@ function App() {
         content = {<CountBox name="months" label="Month count:  " count="12" content = {month_inputs} one_content={month_table_heads}/> } />
       <CheckHideBox name="weeks" label="Rename week days"
         content = {<CountBox name="week_days" label = "Days in week:  " count="5" content = {week_day}/> } />
-      <div>
-        <h2>Traditional days</h2>
-        <span>Date</span><span>Significance</span>
+      <div className='half_div'>
+        <h3>Traditional days</h3>
+        <span className='half_span' style={{width: "100px", backgroundColor: 'aqua'}}>Date</span><span className='half_span'>Significance</span><br/>
         <Recursept id="first_date" end="+" recur="end" content = {date_input} />
       </div>
-      <div>
-        <h2>New days</h2>
+      <div className='half_div'>
+        <h3>New days</h3>
         <li id="output_dates"></li>
       </div>
     </div>

@@ -6,8 +6,8 @@
   font-family:Georgia, 'Times New Roman', Times, serif
 }
 
-.CheckHideBox {
-  border: 2px solid black;
+.checkHideBox {
+  border: 4px solid black;
   margin: 5px;
   padding: 5px;
 }
@@ -16,6 +16,56 @@ input[type="number"] {
   width: 60px;
 }
 
-input[type="text"] {
+.name_text {
+  display: inline-block;
+  width: 180px;
+  margin-left: 5px;
   margin-right: 5px;
+}
+
+.number_head {
+  display: inline-block;
+  width: 60px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+input[type="date"] {
+  width: 100px;
+}
+
+input {
+  margin: 2px 5px;
+}
+
+button {
+  margin: 2px 5px;
+}
+
+.third {
+  width: 33%;
+  display: inline-flex;
+}
+
+.half_div {
+  width: 48%;
+  padding: 1%;
+  display: inline-block;
+}
+
+.half_span {
+  padding: 1% 3%;
+  display: inline-block;
+  margin-top: 0;
+}
+
+h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.sig_text {
+  width: 45%;
+  margin: 0px 10px;
+  display: inline;
 }
