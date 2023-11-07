@@ -96,16 +96,16 @@ function Recursept( props ) {
 
 // App is where the app is written
 function App() {
-  const date_input = <div>
-    <label for="year_text">Year:</label>
+  const start_date_input = <div>
+    <label for="year_text">Year:  </label>
     <input type="text" id="year_text" name="year_text"></input>
-    <label for="month_text">Month:</label>
+    <label for="month_text">Month:  </label>
     <input type="text" id="month_text" name="month_text"></input>
-    <label for="day_text">Day:</label>
+    <label for="day_text">Day:  </label>
     <input type="text" id="day_text" name="day_text"></input>
   </div>;
 
-  const leap_add = <div>every <input type="number" /> years</div>
+  const leap_add = <span>every <input type="number" /> years</span>
   const leap_input = <div><h2>Frequency:</h2>
     <Recursept end="." recur="except" content = {leap_add}/>
   </div>
@@ -122,18 +122,25 @@ function App() {
 
   const week_day = <input type="text"></input>
 
+  const date_input = <span><input type="date" /><input type="text"/></span>
 
   return (
     <div className="App">
-      <CheckHideBox name="start_date" label="Change start date" content = {date_input}/>
+      <CheckHideBox name="start_date" label="Change start date" content = {start_date_input}/>
       <CheckHideBox name="year_len" label="Change year length" content = {year_len_input}/>
       <CheckHideBox name="months" label="Change months"
         content = {<CountBox name="months" label="Month count:  " count="12" content = {month_inputs} one_content={month_table_heads}/> } />
       <CheckHideBox name="weeks" label="Rename week days"
         content = {<CountBox name="week_days" label = "Days in week:  " count="5" content = {week_day}/> } />
-      <p>
-        Editing <code>src/App.js</code> and saving <em>will</em> cause it to reload!
-      </p>
+      <div>
+        <h2>Traditional days</h2>
+        <span>Date</span><span>Significance</span>
+        <Recursept id="first_date" end="+" recur="end" content = {date_input} />
+      </div>
+      <div>
+        <h2>New days</h2>
+        <li id="output_dates"></li>
+      </div>
     </div>
   );
 }
