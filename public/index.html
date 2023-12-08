@@ -10,11 +10,6 @@
       content="Web site created using create-react-app"
     />
     <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -27,6 +22,35 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div>
+      <h1>Calendar designer and converter</h1>
+      <p>The below form lets you design your own calendar, with your own start date,
+          years and months and weeks and leap days of the length and frequency of your choice.
+      </p>
+      <p>For those reading this as a porfolio piece:  this was made in ReactJS; its ability to create 
+          reusable custom components reduced the amount of code necessary to produce all these div
+          adjusting their visibility by checkboxes and divs the quantity of which is modified by a number input 
+          and such.  The calendar and date list are, of course, kept in a reducer.
+      </p>
+      <p>For those using this as a calendar:</p>
+      <ul>
+        <li>Start date, and dates to be converted, are given using the proleptic Gregorian calendar.</li>
+        <li>Your start date will be the day that corresponds to the first day of the Year 1 and of the 
+          first month cycle in your calendar, even if you opt to include a Year 0.  It will be presumed to be 
+          the first day of the week (Monday, if you do not change the weekday names).
+        </li>
+        <li>The length of the year does not have to align with the cycle of months.  Changes to the month cycle 
+          do not affect the length of the year unless the relevant box is checked.
+        </li>
+        <li>Similarly, leap month cycles and leap years need not be the same.  After all,
+          the motion of the Moon and the revolution of Earth around the Sun are as independent of each other 
+          as they are independent of the rotation of the Earth about its axis.
+        </li>
+        <li>The number of leap days in a leap month cycle or leap year need not be one (it may even be negative).
+          However, there are not leap weeks.
+        </li>
+      </ul>
+    </div>
     <div id="root"></div>
     <!--
       This HTML file is a template.
