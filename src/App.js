@@ -113,15 +113,15 @@ function WeekNameBox( { num, layer_state, layerContentHandlers} ) {
 }
 
 function MegaButton( {text, onClick} ) {
-    return(<button className="mega_button" onClick={onClick}><h1>{text}</h1></button>)
+    return(<button className="mega_button" onClick={onClick}><h2>{text}</h2></button>)
 }
 
 function DateBox( { num, layer_state, addChangeEndHandlers} ) {
-    return(<div>
+    return(<div className='date_input_div'>
         <input type="date" value={layer_state[num]["date"]} onChange={(e) => addChangeEndHandlers[1](num, e.target.value)} />
         <select value={layer_state[num]["sign"]} onChange={(e) => addChangeEndHandlers[2](num, e.target.value)} name="direction"><option value="1">AD / CE</option><option value="-1">BC / BCE</option></select>
-        <input value={layer_state[num]["significance"]} onChange={(e) => addChangeEndHandlers[3](num, e.target.value)} />
         <button onClick={() => addChangeEndHandlers[4](num)}>Remove</button>
+        <input type="text" value={layer_state[num]["significance"]} onChange={(e) => addChangeEndHandlers[3](num, e.target.value)} />
     </div>);
 }
     
@@ -222,7 +222,7 @@ const someDefaultDates = [
 export default function App() {
     // useReducers and event handling functions
     const [theCalendar, calendar_dispatch] = useReducer(calendarReducer, new Calendar());
-    const [checks, setChecks] = useState( { "date":false, "year":false, "leap":false, "month":false, "week":false, "moc_diff":false, "match":true } );
+    const [checks, setChecks] = useState( { "instruct":true, "date":false, "year":false, "leap":false, "month":false, "week":false, "moc_diff":false, "match":true } );
     function changeCheck(which, val) {
         var copy = {...checks}
         copy[which] = val;
@@ -232,25 +232,25 @@ export default function App() {
     const [newDateList, setNewDateList] = useState(<ul></ul>);
     const [uploadedFile, setUploadedFile] = useState([]);
 
-    function changeStartDay(val) { calendar_dispatch( { type:'change_start_day', value:val }); }
-    function changeStartMonth(val) { calendar_dispatch( { type:'change_start_month', value:val }); }
-    function changeStartYear(val) { calendar_dispatch( { type:'change_start_year', value:val }); }
-    function changeStartSign(val) { calendar_dispatch( { type:'change_start_sign', value: val }); }
-    function changeYearLength(val) { calendar_dispatch( { type:'change_year_length', value:val }); }
-    function changeLeapDays(val) { calendar_dispatch( { type:'change_leap_days', value:val }); }
-    function changeYearZero(val) { calendar_dispatch( { type:'change_year_zero', value: val}); }
+    function changeStartDay(val) { calendar_dispatch( { type:'change_start_day', value:Number(val) }); }
+    function changeStartMonth(val) { calendar_dispatch( { type:'change_start_month', value:Number(val) }); }
+    function changeStartYear(val) { calendar_dispatch( { type:'change_start_year', value:Number(val) }); }
+    function changeStartSign(val) { calendar_dispatch( { type:'change_start_sign', value:Number(val) }); }
+    function changeYearLength(val) { calendar_dispatch( { type:'change_year_length', value:Number(val) }); }
+    function changeLeapDays(val) { calendar_dispatch( { type:'change_leap_days', value:Number(val) }); }
+    function changeYearZero(val) { calendar_dispatch( { type:'change_year_zero', value:val }); }
     function addLeapFreq() { calendar_dispatch( { type:'add_leap_freq' }); }
-    function endLeapFreq(ind) { calendar_dispatch( { type:'end_leap_freq', index:ind }); }
-    function changeLeapFreq(ind, val) { calendar_dispatch( { type:'change_leap_freq', index:ind, value:val }); }
-    function changeMonthCount(ct, yr) { calendar_dispatch( {type:'change_month_count', count:ct, year:yr }); }
-    function changeMonthName(ind, val) { calendar_dispatch( { type:'change_month_name', index:ind, value:val }); }
-    function changeMonthLength(ind, val, yr) { calendar_dispatch( { type:'change_month_length', index:ind, value:val, year:yr }); }
-    function changeMonthLeap(ind, val, yr) { calendar_dispatch( { type:'change_month_leap', index:ind, value:val, year:yr }); }
+    function endLeapFreq(ind) { calendar_dispatch( { type:'end_leap_freq', index:Number(ind) }); }
+    function changeLeapFreq(ind, val) { calendar_dispatch( { type:'change_leap_freq', index:Number(ind), value:Number(val) }); }
+    function changeMonthCount(ct, yr) { calendar_dispatch( {type:'change_month_count', count:Number(ct), year:Number(yr) }); }
+    function changeMonthName(ind, val) { calendar_dispatch( { type:'change_month_name', index:Number(ind), value:val }); }
+    function changeMonthLength(ind, val, yr) { calendar_dispatch( { type:'change_month_length', index:Number(ind), value:Number(val), year:yr }); }
+    function changeMonthLeap(ind, val, yr) { calendar_dispatch( { type:'change_month_leap', index:Number(ind), value:Number(val), year:yr }); }
     function addMonthCycleLeapFreq() { calendar_dispatch( { type:'add_month_leap_freq' }); }
-    function endMonthCycleLeapFreq(ind) { calendar_dispatch( { type:'end_month_leap_freq', index:ind }); }
-    function changeMonthCycleLeapFreq(ind, val) { calendar_dispatch( { type:'change_month_leap_freq', index:ind, value:val }); }
-    function changeWeekLength(ct) { calendar_dispatch( {type:'change_week_length', count:ct }); }
-    function changeWeekdayName(ind, val) { calendar_dispatch( { type:'change_weekday_name', index:ind, value:val }); }
+    function endMonthCycleLeapFreq(ind) { calendar_dispatch( { type:'end_month_leap_freq', index:Number(ind) }); }
+    function changeMonthCycleLeapFreq(ind, val) { calendar_dispatch( { type:'change_month_leap_freq', index:Number(ind), value:Number(val) }); }
+    function changeWeekLength(ct) { calendar_dispatch( {type:'change_week_length', count:Number(ct) }); }
+    function changeWeekdayName(ind, val) { calendar_dispatch( { type:'change_weekday_name', index:Number(ind), value:val }); }
     function changeWholeCalendar(obj) { calendar_dispatch( { type:'change_whole_calendar', object:obj }); }
 
     function addDate() { date_dispatch( { type:'add_date' })};
@@ -282,7 +282,7 @@ export default function App() {
         const myCal = getRightCalendar();
         myCal.calc_stats(); // Conversion method is a method of the calendar object described in calendar.js
         setNewDateList(<ul>
-            {dateList.map( (v, i) => { return(<li key={i}>{v["significance"] + ": " + myCal.convert_date(Number(v["date"].slice(8)),Number(v["date"].slice(5,7)),Number(v["date"].slice(0,4)),Number(v["sign"]))}</li>); } )}
+            {dateList.map( (v, i) => { return(<li key={i}><strong>{v["significance"]}</strong>{": " + myCal.convert_date(Number(v["date"].slice(8)),Number(v["date"].slice(5,7)),Number(v["date"].slice(0,4)),Number(v["sign"]))}</li>); } )}
         </ul>);
     }
 
@@ -321,6 +321,24 @@ export default function App() {
 
   // Here is where the app is actually put together
     return ( <div className='App'>
+        <CheckHideBox label="Notes:" name="instruct" checkState={checks} setCheckState={changeCheck}
+            content={<ul>
+                <li>Start date, and dates to be converted, are given using the proleptic Gregorian calendar.</li>
+                <li>Your start date will be the day that corresponds to the first day of the Year 1 and of the 
+                  first month cycle in your calendar, even if you opt to include a Year 0.  It will be presumed to be 
+                  the first day of the week (Monday, if you do not change the weekday names).
+                </li>
+                <li>The length of the year does not have to align with the cycle of months.  Changes to the month cycle 
+                  do not affect the length of the year unless the relevant box is checked.
+                </li>
+                <li>Similarly, leap month cycles and leap years need not be the same.  After all,
+                  the motion of the Moon and the revolution of Earth around the Sun are as independent of each other 
+                  as they are independent of the rotation of the Earth about its axis.
+                </li>
+                <li>The number of leap days in a leap month cycle or leap year need not be one (it may even be negative).
+                  However, there are not leap weeks.
+                </li>
+              </ul>}/>
         <CheckHideBox label="Change start date:" name="date" checkState={checks} setCheckState={changeCheck}
             content={<StartDateBox theCalendar={theCalendar}
             changeStartDay={changeStartDay} changeStartMonth={changeStartMonth} changeStartYear={changeStartYear} changeStartSign={changeStartSign}/>}/>
@@ -354,11 +372,15 @@ export default function App() {
             <h3>Dates in new calendar</h3>
             {newDateList}
         </div>
-        <button onClick={populateDates}>Populate dates</button>
-        <MegaButton onClick={convertDates} text="Convert dates!"/>
-        <button onClick={downloadCalendar}>Download calendar</button>
-        <input type='file' accept="application/json" files={uploadedFile}
-            onChange={ (e) => {setUploadedFile(e.target.files); }}/>
-        <button onClick={uploadCalendar}>Apply upload</button>
+        <div>
+            <div className='button_border_div'><button onClick={populateDates}>Populate dates</button></div>
+            <div className='button_border_div'><MegaButton onClick={convertDates} text="Convert dates!"/></div>
+            <div className='button_border_div'><button onClick={downloadCalendar}>Download calendar</button></div>
+            <div className='button_border_div'>
+                Upload calendar:<br/>
+                <input type='file' accept="application/json" files={uploadedFile}
+                onChange={ (e) => {setUploadedFile(e.target.files); }}/>
+            <button onClick={uploadCalendar}>Apply upload</button></div>
+        </div>
     </div> );
 }
